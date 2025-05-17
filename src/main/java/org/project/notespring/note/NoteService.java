@@ -1,48 +1,36 @@
 package org.project.notespring.note;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
+@RequiredArgsConstructor
 @Service
 public class NoteService {
-    private final Map<Long, Note> notes = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    private final NoteRepository noteRepository;
 
     public List<Note> listAll(){
-        return new ArrayList<>(notes.values());
+        return noteRepository.findAll();
     }
 
     public Note add(Note note){
-        long id = idGenerator.getAndIncrement();
-        note.setId(id);
-        notes.put(id, note);
-        return note;
+       return noteRepository.save(note);
     }
 
     public void deleteById(long id){
-        if(!notes.containsKey(id)){
-            throw new NoSuchElementException("id is invalid: " + notes.get(id));
+            if(noteRepository.existsById(id)){
+                noteRepository.deleteById(id);
             }
-        notes.remove(id);
+            else throw new NoSuchElementException("id not found: " + id);
         }
 
     public void update(Note note){
-        if(!notes.containsKey(note.getId())){
-            throw new NoSuchElementException("id is invalid: " + notes.get(note.getId()));
-        }
-        Note existingNote = notes.get(note.getId());
-        existingNote.setTitle(note.getTitle());
-        existingNote.setContent(note.getContent());
+            noteRepository.save(note);
     }
 
     public Note getById(long id){
-        Note note = notes.get(id);
-        if(note == null){
-            throw new NoSuchElementException("id is invalid: " + id);
-        }
-        return  note;
+        return noteRepository.findById(id).get();
     }
 
 }
