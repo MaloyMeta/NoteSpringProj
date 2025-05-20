@@ -1,6 +1,7 @@
 package org.project.notespring.note;
 
 import lombok.RequiredArgsConstructor;
+import org.project.notespring.exceptions.NoteNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,11 +19,11 @@ public class NoteService {
        return noteRepository.save(note);
     }
 
-    public void deleteById(long id){
+    public void deleteById(long id) throws NoteNotFoundException {
             if(noteRepository.existsById(id)){
                 noteRepository.deleteById(id);
             }
-            else throw new NoSuchElementException("id not found: " + id);
+            else throw new NoteNotFoundException("id not found: " + id);
         }
 
     public void update(Note note){

@@ -22,7 +22,7 @@ public class NoteController {
     }
 
     @PostMapping("/delete")
-    public String deleteById(@RequestParam("id") long id, Model model){
+    public String deleteById(@RequestParam("id") long id, Model model) throws Exception{
        noteService.deleteById(id);
        return "redirect:/note/list";
     }
