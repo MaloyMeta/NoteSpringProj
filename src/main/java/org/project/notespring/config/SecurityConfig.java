@@ -1,4 +1,4 @@
-package org.project.notespring.note;
+package org.project.notespring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
